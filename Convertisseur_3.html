@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Convertisseur m³ vers Nm³</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        .ligne {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 12px 0;
+            gap: 10px;
+        }
+
+        input,
+        select {
+            padding: 6px;
+            font-size: 16px;
+        }
+
+        .unite {
+            width: 80px;
+            text-align: left;
+        }
+
+        #resultat {
+            margin-top: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            color: darkblue;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Convertisseur Perfesco m³ vers Nm³</h2>
+
+    <p>
+        Volume (m³) :
+        <input type="number" id="volume" placeholder="Entrer le volume réel" oninput="convertir()">
+    </p>
+
+    <p>
+        Pression :
+        <input type="number" id="pression" placeholder="Entrer la pression absolue" oninput="convertir()">
+
+        <select id="unitePression">
+            <option value="Pa">Pa</option>
+            <option value="kPa">kPa</option>
+            <option value="MPa">MPa</option>
+            <option value="bar">bar</option>
+            <option value="mbar">mbar</option>
+            <option value="psi">psi</option>
+            <option value="mmHg">mmHg</option>
+        </select>
+    </p>
+
+    <p>
+        Température (°C) :
+        <input type="number" id="temperature" placeholder="Entrer la température" oninput="convertir()">
+    </p>
+
+    <h3>Résultat :</h3>
+
+    <p id="resultat"></p>
+
+    <script>
+
+        function convertir() {
+
+            let volume = Number(document.getElementById("volume").value);
+
+            let pression = Number(document.getElementById("pression").value);
+
+            let temperature = Number(document.getElementById("temperature").value);
+
+            let unitePression =
+                document.getElementById("unitePression").value;
+
+            /*
+            Conversion de la pression en Pa
+            */
+
+            const facteursPression = {
+                 Pa: 1,
+                 kPa: 1000,
+                 MPa: 1000000,
+                 bar: 100000,
+                 mbar: 100,
+                 psi: 6894.757,
+                 mmHg: 133.322
+             };
+
+            let pressionPa =
+            pression * facteursPression[unitePression];
+
+            /*
+            Conversion °C -> K
+            */
+
+            let temperatureK = temperature + 273.15;
+
+            /*
+            Conditions normales
+            */
+
+            let pressionNormale = 101325;    // Pa
+            let temperatureNormale = 273.15; // K
+
+            /*
+            Calcul du volume normalisé
+            */
+
+            let vn =
+                volume *
+                pressionPa /
+                pressionNormale *
+                temperatureNormale /
+                temperatureK;
+
+            /*
+            Affichage
+            */
+
+            document.getElementById("resultat").innerHTML =
+                vn.toFixed(2) + " Nm³";
+        }
+
+    </script>
+
+</body>
+
+</html>
